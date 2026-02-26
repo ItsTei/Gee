@@ -1,0 +1,29 @@
+## plot5.R
+## Baltimore: Emissions from motor vehicle sources, 1999–2008
+## (interpreting "motor vehicle sources" as type == "ON-ROAD")
+
+NEI <- readRDS("summarySCC_PM25.rds")
+
+if (!requireNamespace("ggplot2", quietly = TRUE)) {
+  stop("Package 'ggplot2' is required. Install it with install.packages('ggplot2').")
+}
+library(ggplot2)
+
+balt_mv <- subset(NEI, fips == "24510" & type == "ON-ROAD")
+
+agg <- aggregate(Emissions ~ year, data = balt_mv, sum, na.rm = TRUE)
+
+png("plot5.png", width = 900, height = 550)
+
+ggplot(agg, aes(x = year, y = Emissions)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Baltimore PM2.5 Emissions from Motor Vehicles (On-Road) (1999–2008)",
+    x = "Year",
+    y = "PM2.5 Emissions (tons)"
+  ) +
+  scale_x_continuous(breaks = sort(unique(agg$year))) +
+  theme_minimal()
+
+dev.off()
