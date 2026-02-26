@@ -1,0 +1,31 @@
+## plot6.R
+## Compare motor vehicle (on-road) emissions: Baltimore City vs Los Angeles County, 1999–2008
+
+NEI <- readRDS("summarySCC_PM25.rds")
+
+if (!requireNamespace("ggplot2", quietly = TRUE)) {
+  stop("Package 'ggplot2' is required. Install it with install.packages('ggplot2').")
+}
+library(ggplot2)
+
+mv <- subset(NEI, type == "ON-ROAD" & fips %in% c("24510", "06037"))
+
+mv$city <- ifelse(mv$fips == "24510", "Baltimore City, MD", "Los Angeles County, CA")
+
+agg <- aggregate(Emissions ~ year + city, data = mv, sum, na.rm = TRUE)
+
+png("plot6.png", width = 900, height = 550)
+
+ggplot(agg, aes(x = year, y = Emissions, color = city)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Motor Vehicle (On-Road) PM2.5 Emissions: Baltimore vs Los Angeles (1999–2008)",
+    x = "Year",
+    y = "PM2.5 Emissions (tons)",
+    color = "City"
+  ) +
+  scale_x_continuous(breaks = sort(unique(agg$year))) +
+  theme_minimal()
+
+dev.off()
