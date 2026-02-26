@@ -9,7 +9,6 @@ if (!requireNamespace("ggplot2", quietly = TRUE)) {
 }
 library(ggplot2)
 
-## Use SCC 'Short.Name' to find coal combustion-related rows
 coal_scc <- SCC[grepl("coal", SCC$Short.Name, ignore.case = TRUE), "SCC"]
 
 coal_nei <- NEI[NEI$SCC %in% coal_scc, ]
@@ -21,12 +20,7 @@ png("plot4.png", width = 900, height = 550)
 ggplot(agg, aes(x = year, y = Emissions)) +
   geom_line() +
   geom_point() +
-  labs(
-    title = "US PM2.5 Emissions from Coal Combustion-Related Sources (1999–2008)",
-    x = "Year",
-    y = "PM2.5 Emissions (tons)"
-  ) +
-  scale_x_continuous(breaks = sort(unique(agg$year))) +
-  theme_minimal()
+  labs(title = "US PM2.5 Emissions from Coal Combustion-Related Sources (1999–2008)", x = "Year",y = "PM2.5 Emissions (tons)"
+  ) + scale_x_continuous(breaks = sort(unique(agg$year))) + theme_minimal()
 
 dev.off()
