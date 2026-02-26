@@ -17,13 +17,8 @@ png("plot3.png", width = 900, height = 550)
 ggplot(agg, aes(x = year, y = Emissions, color = type)) +
   geom_line() +
   geom_point() +
-  labs(
-    title = "Baltimore PM2.5 Emissions by Source Type (1999–2008)",
-    x = "Year",
-    y = "PM2.5 Emissions (tons)",
-    color = "Source type"
-  ) +
-  scale_x_continuous(breaks = sort(unique(agg$year))) +
+  labs( title = "Baltimore PM2.5 Emissions by Source Type (1999–2008)", x = "Year",  y = "PM2.5 Emissions (tons)", color = "Source type")
+  + scale_x_continuous(breaks = sort(unique(agg$year))) +
   theme_minimal()
 
 dev.off()
